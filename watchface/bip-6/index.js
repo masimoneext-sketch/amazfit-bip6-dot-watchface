@@ -35,10 +35,11 @@ function pad2(n) {
 
 function openNativeApp(kind) {
   try {
+    // Nomi schermate native confermati sul Bip 6: activityAppScreen, WeatherScreen.
+    // Alba -> Meteo (l'alba e' nel meteo); Battito -> Attivita' (include l'HR).
     let url = 'activityAppScreen';
-    if (kind === 'weather') url = 'WeatherScreen';
-    else if (kind === 'sunrise') url = 'SunRiseSunSetScreen';
-    else if (kind === 'hr') url = 'HeartRateScreen';
+    if (kind === 'weather' || kind === 'sunrise') url = 'WeatherScreen';
+    else if (kind === 'hr') url = 'activityAppScreen';
     hmApp.startApp({ appid: 1, url: url, native: true });
   } catch (e) {}
 }
