@@ -78,7 +78,7 @@ def bitmap_size(rows, pitch):
     return int(w * pitch), int(h * pitch)
 
 
-def draw_bitmap(draw, rows, x, y, pitch, color, radius_ratio=0.52):
+def draw_bitmap(draw, rows, x, y, pitch, color, radius_ratio=0.38):
     """
     Disegna una bitmap pixel-art arbitraria (lista di stringhe 'X'/'.') a punti,
     stesso stile del font. Usata per le icone delle pill e il fumetto notifiche.

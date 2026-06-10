@@ -17,6 +17,7 @@ RED      = (226, 48, 45)
 PILL_BG  = (26, 26, 28)
 GREEN    = (48, 199, 90)
 ICON     = (200, 200, 200)
+GREY     = (150, 156, 150)  # grigio LCD tipo Casio per i valori delle pill
 
 # Valori d'esempio (saranno dinamici nel codice Zepp OS)
 HH, MM   = "11", "14"
@@ -53,17 +54,27 @@ def main():
     F.draw_text(d, HH, x0, y_clock, pitch, WHITE)
     F.draw_text(d, MM, x0 + hh_w + sp, y_clock, pitch, RED)
 
+    # separatore ":" — due punti da 4 micro-pixel (quadrato 2x2)
+    sep_cx = x0 + hh_w + sp / 2
+    mp = 7
+    dot = ["XX", "XX"]
+    F.draw_bitmap(d, dot, sep_cx - mp, y_clock + 20, mp, WHITE)
+    F.draw_bitmap(d, dot, sep_cx - mp, y_clock + 50, mp, WHITE)
+
     # (Notifiche: gestite dall'overlay di sistema dell'orologio, non disegnate qui)
 
-    # --- DATA: "MER" bianco + "10" rosso, allineata a destra sotto l'ora ---
-    dp = 6
-    dow_w = F.text_size(DOW, dp)[0]
-    gap   = F.text_size(" ", dp)[0]
+    # --- DATA: "MER" (micro-pixel) bianco + "10" rosso, allineata a destra ---
+    dp = 6           # giorno mese
+    dp_dow = 4       # giorno settimana in micro-pixel
+    dow_w = F.text_size(DOW, dp_dow)[0]
+    gap   = 10
     day_w = F.text_size(DAY, dp)[0]
     right = x0 + total
     y_date = y_clock + F.text_size(HH, pitch)[1] + 16
     dx = right - (dow_w + gap + day_w)
-    F.draw_text(d, DOW, dx, y_date, dp, WHITE)
+    day_h = F.text_size(DAY, dp)[1]
+    dow_h = F.text_size(DOW, dp_dow)[1]
+    F.draw_text(d, DOW, dx, y_date + (day_h - dow_h), dp_dow, WHITE, radius_ratio=0.46)
     F.draw_text(d, DAY, dx + dow_w + gap, y_date, dp, RED)
 
     # --- GRIGLIA 2x2 di pill ---
@@ -74,28 +85,28 @@ def main():
     y2 = y1 + ph + gy
     col_l, col_r = mx, mx + pw + gx
 
-    def fill_pill(px, py, bitmap, value, bg, txt):
+    def fill_pill(px, py, bitmap, value, bg, txt, vp_override=None):
         pill(d, px, py, pw, ph, bg)
         icy = py + ph/2
-        icx = px + 28
+        icx = px + 26
         draw_icon(d, bitmap, icx, icy, 3, WHITE if bg != PILL_BG else ICON)
         # pitch del valore in base alla lunghezza, cosi' non trabocca dalla pill
         vlen = len(value.replace(chr(176), ""))
-        vp = 6 if vlen <= 3 else (5 if vlen == 4 else 4)
+        vp = vp_override if vp_override else (6 if vlen <= 3 else (5 if vlen == 4 else 4))
         vh = F.text_size(value, vp)[1]
-        F.draw_text(d, value, px + 52, icy - vh/2, vp, txt)
+        F.draw_text(d, value, px + 64, icy - vh/2, vp, txt)
 
-    fill_pill(col_l, y1, IC.RUNNER,  STEPS,   PILL_BG, WHITE)
-    fill_pill(col_r, y1, IC.CLOUD,   TEMP,    PILL_BG, WHITE)
-    fill_pill(col_l, y2, IC.SUNRISE, SUNRISE, PILL_BG, WHITE)
+    fill_pill(col_l, y1, IC.RUNNER,  STEPS,   PILL_BG, GREY,  vp_override=3)
+    fill_pill(col_r, y1, IC.CLOUD,   TEMP,    PILL_BG, GREY,  vp_override=3)
+    fill_pill(col_l, y2, IC.SUNRISE, SUNRISE, PILL_BG, GREY,  vp_override=3)
     fill_pill(col_r, y2, IC.HEART,   HR,      RED,     WHITE)
 
-    # grado "°" disegnato a mano (cerchietto) accanto alla temperatura
-    tp = 6
+    # grado "°" accanto alla temperatura (piccola, grigia)
+    tp = 3
     tw = F.text_size(TEMP, tp)[0]
-    deg_x = col_r + 52 + tw + 5
-    deg_y = y1 + ph/2 - F.text_size(TEMP, tp)[1]/2 + 2
-    d.ellipse([deg_x, deg_y, deg_x + 7, deg_y + 7], outline=WHITE, width=2)
+    deg_x = col_r + 64 + tw + 4
+    deg_y = y1 + ph/2 - F.text_size(TEMP, tp)[1]/2
+    d.ellipse([deg_x, deg_y, deg_x + 5, deg_y + 5], outline=GREY, width=1)
 
     out = os.path.join(os.path.dirname(__file__), "..", "mockup.png")
     img.save(out)

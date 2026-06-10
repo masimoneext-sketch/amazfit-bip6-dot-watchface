@@ -4,49 +4,52 @@ Icone pixel-art (bitmap 'X'/'.') per le pill della watch face e il fumetto
 notifiche. Stesso stile a punti del font: rese con dotfont.draw_bitmap.
 """
 
-# Omino che corre (passi)
+# Passi: due impronte di scarpa (suola + tacco 2x2), molto sfalsate sx-su/dx-giu
 RUNNER = [
-    "...XX...",
-    "...XX...",
-    "........",
-    ".XXXXX..",
-    "X..XX...",
-    "...XX.X.",
-    "...XXX..",
-    "..XX.X..",
-    ".XX..X..",
-    "XX...XX.",
+    ".XX........",
+    "XXXX.......",
+    "XXXX.......",
+    "...........",
+    ".XX.....XX.",
+    ".XX....XXXX",
+    ".......XXXX",
+    "...........",
+    "........XX.",
+    "........XX.",
 ]
 
-# Nuvola (meteo)
+# Meteo: nuvoletta (file cloud.png)
 CLOUD = [
-    "...XXX...",
-    "..XXXXX..",
-    ".XXXXXXX.",
-    "XXXXXXXXX",
-    "XXXXXXXXX",
-    ".XXXXXXX.",
+    "......XXX...",
+    "...XXXXXXXX.",
+    "..XXXXXXXXXX",
+    ".XXXXXXXXXXX",
+    "XXXXXXXXXXXX",
+    "XXXXXXXXXXXX",
+    ".XXXXXXXXXX.",
 ]
 
-# Sole che sorge sull'orizzonte + raggi (ciclo alba)
+# Alba: mezzo sole = semicerchio + 5 raggi da 1 punto, staccati
 SUNRISE = [
-    "....X....",
-    ".X..X..X.",
-    "..XXXXX..",
-    ".XXXXXXX.",
-    "XXXXXXXXX",
-    ".........",
-    "XXXXXXXXX",
+    ".....X.....",
+    ".X.......X.",
+    "...........",
+    "....XXX....",
+    "...XXXXX...",
+    "X.XXXXXXX.X",
+    "..XXXXXXX..",
 ]
 
-# Cuore (battito)
+# Cuore (battito) — piu' grande
 HEART = [
-    ".XX.XX.",
-    "XXXXXXX",
-    "XXXXXXX",
-    ".XXXXX.",
-    "..XXX..",
-    "...X...",
+    ".XX...XX.",
+    "XXXXXXXXX",
+    "XXXXXXXXX",
+    "XXXXXXXXX",
+    ".XXXXXXX.",
+    "..XXXXX..",
+    "...XXX...",
+    "....X....",
 ]
 
 # Fumetto stile WhatsApp (notifiche) — coda in basso a sinistra, 3 puntini
