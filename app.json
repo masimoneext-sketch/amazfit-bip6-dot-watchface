@@ -1,12 +1,12 @@
 {
   "configVersion": "v3",
   "app": {
-    "appId": 1116822,
-    "appName": "Nothing Dot",
+    "appId": 1116827,
+    "appName": "Dot Vertical",
     "appType": "watchface",
     "version": { "code": 1, "name": "1.0.0" },
     "vender": "marco",
-    "description": "Watch face stile Nothing dot-matrix per Amazfit Bip 6",
+    "description": "Watch face dot-matrix verticale per Amazfit Bip 6",
     "icon": "images/preview.png"
   },
   "permissions": ["device:os.bg_service", "data:user.hr", "data:user.step"],
