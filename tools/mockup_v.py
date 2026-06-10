@@ -33,8 +33,8 @@ def main(weather_bmp=IC.CLOUD, suffix="", temp_val=TEMP):
     mm_w = F.text_size(MM, pitch)[0]
     ch = F.text_size(HH, pitch)[1]
     left_cx = 95  # centro colonna sinistra
-    y_hh = 46
-    y_mm = y_hh + ch + 76  # ore e minuti molto distanziati
+    y_hh = 74
+    y_mm = y_hh + ch + 56  # ore e minuti, blocco piu' in basso
     F.draw_text(d, HH, left_cx - hh_w / 2, y_hh, pitch, WHITE)
     F.draw_text(d, MM, left_cx - mm_w / 2, y_mm, pitch, RED)
 
@@ -42,7 +42,7 @@ def main(weather_bmp=IC.CLOUD, suffix="", temp_val=TEMP):
     line_pitch = 11
     line_bmp = ["X" * 11]
     lw = F.bitmap_size(line_bmp, line_pitch)[0]
-    F.draw_bitmap(d, line_bmp, left_cx - lw / 2, y_hh + ch + 32, line_pitch, WHITE)
+    F.draw_bitmap(d, line_bmp, left_cx - lw / 2, y_hh + ch + 26, line_pitch, WHITE)
 
     # data sotto i minuti
     dp_dow, dp_day = 4, 6
@@ -58,11 +58,11 @@ def main(weather_bmp=IC.CLOUD, suffix="", temp_val=TEMP):
     F.draw_text(d, DAY, dx + dow_w + gap, y_date, dp_day, RED)
 
     # ===== COLONNA DESTRA: 4 pill impilate =====
-    px = 198
-    pw = 178
-    ph = 96
+    px = 202
+    pw = 170
+    ph = 82
     gy = 10
-    y0 = 16
+    y0 = 34
 
     def fill_pill(row, bitmap, value, bg, txt, vp_override=None):
         py = y0 + row * (ph + gy)

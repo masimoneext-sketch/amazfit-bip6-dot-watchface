@@ -32,15 +32,13 @@ function dowLang() {
 
 function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 
-// codice condizione meteo -> icona (mappa Huami standard, da calibrare sul device)
-function weatherIconSrc(code) {
-  if (code === 0) return 'icon/w_sun.png';            // sereno
-  if (code >= 1 && code <= 3) return 'icon/w_cloud.png'; // nuvoloso/nebbia
-  if (code === 5 || code === 6) return 'icon/w_storm.png'; // temporale
-  if (code >= 13 && code <= 22) return 'icon/w_snow.png';  // neve
-  if (code >= 4) return 'icon/w_rain.png';            // pioggia
-  return 'icon/w_cloud.png';
-}
+// mappa codici meteo Huami (1..29) -> nostre 5 icone (indice 0 = codice 1)
+const SUN = 'icon/w_sun.png', CLD = 'icon/w_cloud.png', RN = 'icon/w_rain.png', ST = 'icon/w_storm.png', SN = 'icon/w_snow.png';
+const WEATHER_ICONS = [
+  SUN, CLD, CLD, RN, ST, ST, SN, RN, RN, RN,   // 1-10
+  RN, RN, RN, SN, SN, SN, SN, SN, CLD, RN,     // 11-20
+  CLD, RN, RN, RN, RN, RN, SN, SN, SN,         // 21-29
+];
 
 function openNativeApp(kind) {
   try {
@@ -59,12 +57,12 @@ WatchFace({
     // ===== COLONNA SINISTRA: ore sopra / minuti sotto =====
     try {
       hmUI.createWidget(hmUI.widget.IMG_TIME, {
-        hour_startX: 29, hour_startY: 40, hour_array: NUM_BIG_W, hour_space: 12, hour_zero: 1,
-        minute_startX: 29, minute_startY: 168, minute_array: NUM_BIG_R, minute_space: 12, minute_zero: 1,
+        hour_startX: 29, hour_startY: 72, hour_array: NUM_BIG_W, hour_space: 12, hour_zero: 1,
+        minute_startX: 29, minute_startY: 208, minute_array: NUM_BIG_R, minute_space: 12, minute_zero: 1,
       });
     } catch (e) {}
     // linea separatrice
-    try { hmUI.createWidget(hmUI.widget.IMG, { x: 46, y: 138, src: 'sep_line.png' }); } catch (e) {}
+    try { hmUI.createWidget(hmUI.widget.IMG, { x: 46, y: 178, src: 'sep_line.png' }); } catch (e) {}
 
     // helper campo-numero a cifre-immagine
     function numberField(x, y, folder, digitW, maxDigits) {
@@ -93,12 +91,12 @@ WatchFace({
     // DATA: giorno settimana (lingua) + giorno mese
     const LANG = dowLang();
     let dowWidget = null;
-    try { dowWidget = hmUI.createWidget(hmUI.widget.IMG, { x: 24, y: 276, src: `dow/${LANG}/0.png` }); } catch (e) {}
-    const dayField = numberField(106, 262, 'num_sm_r', 30, 2);
+    try { dowWidget = hmUI.createWidget(hmUI.widget.IMG, { x: 24, y: 314, src: `dow/${LANG}/0.png` }); } catch (e) {}
+    const dayField = numberField(106, 300, 'num_sm_r', 30, 2);
 
     // ===== COLONNA DESTRA: 4 pill impilate =====
-    const PX = 198, PW = 178, PH = 96, R = 30;
-    const rowY = [16, 122, 228, 334];
+    const PX = 202, PW = 170, PH = 82, R = 28;
+    const rowY = [34, 126, 218, 310];
 
     function pill(py, red, kind) {
       try {
@@ -115,30 +113,39 @@ WatchFace({
 
     // Passi
     pill(rowY[0], false, 'steps');
-    icon(PX + 8, rowY[0] + 27, 'icon/runner.png');
-    const stepField = numberField(PX + 66, rowY[0] + 37, 'num_tiny_g', 15, 5);
+    icon(PX + 8, rowY[0] + 20, 'icon/runner.png');
+    const stepField = numberField(PX + 62, rowY[0] + 30, 'num_tiny_g', 15, 5);
 
-    // Meteo (icona dinamica)
+    // Meteo: icona dinamica (IMG_LEVEL data-bound) + temperatura attuale (data-bound)
     pill(rowY[1], false, 'weather');
-    const weatherIcon = icon(PX + 8, rowY[1] + 27, 'icon/w_cloud.png');
-    const tempField = numberField(PX + 66, rowY[1] + 37, 'num_tiny_g', 15, 2);
-    icon(PX + 66 + 32, rowY[1] + 37, 'num_tiny_g/deg.png');
+    try {
+      hmUI.createWidget(hmUI.widget.IMG_LEVEL, {
+        x: PX + 8, y: rowY[1] + 20, image_array: WEATHER_ICONS, image_length: WEATHER_ICONS.length,
+        type: hmUI.data_type.WEATHER_CURRENT, show_level: hmUI.show_level.ONLY_NORMAL,
+      });
+    } catch (e) {}
+    try {
+      hmUI.createWidget(hmUI.widget.TEXT_IMG, {
+        x: PX + 62, y: rowY[1] + 30, font_array: NUM_TINY_G, h_space: 2, type: hmUI.data_type.WEATHER_CURRENT,
+      });
+    } catch (e) {}
+    icon(PX + 62 + 32, rowY[1] + 30, 'num_tiny_g/deg.png');
 
     // Alba
     pill(rowY[2], false, 'sunrise');
-    icon(PX + 8, rowY[2] + 27, 'icon/sunrise.png');
-    const sunHField = numberField(PX + 66, rowY[2] + 37, 'num_tiny_g', 15, 2);
-    icon(PX + 66 + 30, rowY[2] + 37, 'num_tiny_g/colon.png');
-    const sunMField = numberField(PX + 66 + 45, rowY[2] + 37, 'num_tiny_g', 15, 2);
+    icon(PX + 8, rowY[2] + 20, 'icon/sunrise.png');
+    const sunHField = numberField(PX + 62, rowY[2] + 30, 'num_tiny_g', 15, 2);
+    icon(PX + 62 + 30, rowY[2] + 30, 'num_tiny_g/colon.png');
+    const sunMField = numberField(PX + 62 + 45, rowY[2] + 30, 'num_tiny_g', 15, 2);
 
     // Battito
     pill(rowY[3], true, 'hr');
-    icon(PX + 8, rowY[3] + 27, 'icon/heart.png');
+    icon(PX + 8, rowY[3] + 20, 'icon/heart.png');
     try {
-      hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: PX + 66, y: rowY[3] + 27, font_array: NUM_HR_W, h_space: 2, type: hmUI.data_type.HEART });
+      hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: PX + 62, y: rowY[3] + 20, font_array: NUM_HR_W, h_space: 2, type: hmUI.data_type.HEART });
     } catch (e) {}
 
-    stepField.set(0); tempField.set(0); sunHField.set('00'); sunMField.set('00'); dayField.set('10');
+    stepField.set(0); sunHField.set('00'); sunMField.set('00'); dayField.set('10');
 
     // ===== DATI LIVE =====
     function readNum(sensor, names) {
@@ -168,18 +175,11 @@ WatchFace({
       try { const s = hmSensor.createSensor(hmSensor.id.STEP); const v = readNum(s, ['getCurrent', 'current']); if (v !== null) stepField.set(v); } catch (e) {}
     }
     function updateWeather() {
+      // temperatura e icona sono data-bound (auto). Qui solo l'orario alba dal forecast.
       try {
         const weather = hmSensor.createSensor(hmSensor.id.WEATHER);
         const wd = weather.getForecastWeather();
-        if (!wd || !wd.forecastData || !wd.forecastData.data || wd.forecastData.count <= 0) return;
-        const t0 = wd.forecastData.data[0];
-        if (t0 && t0.high !== undefined && t0.high !== null) tempField.set(t0.high);
-        // condizione meteo -> icona (campo da calibrare sul device)
-        if (weatherIcon && t0) {
-          const code = readNum(t0, ['weatherType', 'weatherCode', 'weather', 'code']);
-          if (code !== null) weatherIcon.setProperty(hmUI.prop.SRC, weatherIconSrc(code));
-        }
-        if (wd.tideData && wd.tideData.data && wd.tideData.count > 0) {
+        if (wd && wd.tideData && wd.tideData.data && wd.tideData.count > 0) {
           const tide = wd.tideData.data[0];
           if (tide && tide.sunrise) { sunHField.set(pad2(tide.sunrise.hour)); sunMField.set(pad2(tide.sunrise.minute)); }
         }
