@@ -1,0 +1,40 @@
+{
+  "configVersion": "v3",
+  "app": {
+    "appId": 1011001,
+    "appName": "Nothing Dot",
+    "appType": "watchface",
+    "version": { "code": 1, "name": "1.0.0" },
+    "vender": "marco",
+    "description": "Watch face stile Nothing dot-matrix per Amazfit Bip 6",
+    "icon": "images/preview.png"
+  },
+  "permissions": ["device:os.bg_service", "data:user.hr", "data:user.step"],
+  "runtime": {
+    "apiVersion": { "compatible": "1.0.0", "target": "1.0.1", "minVersion": "1.0.0" }
+  },
+  "targets": {
+    "bip-6": {
+      "module": {
+        "watchface": {
+          "path": "watchface/bip-6/index",
+          "main": 1,
+          "editable": 0,
+          "lockscreen": 0
+        }
+      },
+      "platforms": [
+        { "name": "Amazfit Bip 6", "deviceSource": 9765120 },
+        { "name": "Amazfit Bip 6", "deviceSource": 9765121 },
+        { "name": "Amazfit Bip 6", "deviceSource": 10158337 }
+      ],
+      "designWidth": 390
+    }
+  },
+  "i18n": {
+    "en-US": { "appName": "Nothing Dot" },
+    "it-IT": { "appName": "Nothing Dot" }
+  },
+  "defaultLanguage": "it-IT",
+  "debug": false
+}

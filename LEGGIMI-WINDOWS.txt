@@ -1,0 +1,75 @@
+==========================================================
+  NOTHING DOT — Watch face per Amazfit Bip 6
+  Guida per installarla dal tuo PC Windows
+==========================================================
+
+Cosa ti serve: il PC Windows, l'orologio Bip 6 acceso e con la
+MODALITA' SVILUPPATORE gia' attivata nell'app Zepp (fatto!).
+
+NB: in tutti i comandi NON c'e' "npx" davanti, perche' qui Zeus
+lo installiamo in modo globale. Scrivi i comandi cosi' come sono.
+
+----------------------------------------------------------
+PASSO 1 — Installa Node.js (solo la prima volta)
+----------------------------------------------------------
+1. Vai su   https://nodejs.org
+2. Scarica la versione "LTS" (il pulsante grande a sinistra)
+3. Installala lasciando tutte le opzioni di default (Avanti,
+   Avanti, Installa).
+
+Per verificare: apri il "Prompt dei comandi" (cerca "cmd" nel
+menu Start) e scrivi:
+      node -v
+Se ti risponde un numero tipo v20.x.x, sei a posto.
+
+----------------------------------------------------------
+PASSO 2 — Installa lo strumento Zeus (solo la prima volta)
+----------------------------------------------------------
+Sempre nel Prompt dei comandi, scrivi:
+
+      npm install -g @zeppos/zeus-cli
+
+Aspetta che finisca (un minuto circa). Per verificare:
+
+      zeus -v
+
+----------------------------------------------------------
+PASSO 3 — Scompatta il progetto
+----------------------------------------------------------
+1. Copia il file  bip6-watchface.zip  sul Desktop.
+2. Tasto destro -> "Estrai tutto..." -> Estrai.
+3. Ti ritrovi una cartella   bip6-watchface
+
+----------------------------------------------------------
+PASSO 4 — Entra nella cartella dal Prompt
+----------------------------------------------------------
+Nel Prompt dei comandi scrivi (se l'hai estratta sul Desktop):
+
+      cd %USERPROFILE%\Desktop\bip6-watchface
+
+----------------------------------------------------------
+PASSO 5 — Login al tuo account Zepp
+----------------------------------------------------------
+      zeus login
+
+Si APRIRA' IL BROWSER: accedi con lo STESSO account Zepp che usi
+nell'app del telefono. Quando il browser dice che e' tutto ok,
+torna al Prompt: sarai loggato.
+
+----------------------------------------------------------
+PASSO 6 — Manda la watch face all'orologio
+----------------------------------------------------------
+      zeus preview
+
+- Se ti chiede di scegliere il dispositivo, scegli  Amazfit Bip 6.
+- Tieni l'orologio vicino e il telefono con l'app Zepp aperta.
+- La watch face viene inviata e installata: la trovi tra i
+  quadranti del Bip 6.
+
+----------------------------------------------------------
+SE QUALCOSA NON VA
+----------------------------------------------------------
+Copia-incolla a Neo (qui in chat) l'errore esatto che vedi nel
+Prompt: lo sistemiamo insieme. Non scrivere MAI email/password
+in chat: quelle vanno solo nel browser del Passo 5.
+==========================================================
