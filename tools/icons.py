@@ -18,6 +18,58 @@ RUNNER = [
     "........XX.",
 ]
 
+# ===== Icone meteo dinamiche (stesso stile dot) =====
+# Sole INTERO (sereno) — come il mezzo sole dell'alba ma cerchio pieno + 8 raggi da 1 punto
+WSUN = [
+    ".....X.....",
+    ".X.......X.",
+    "...........",
+    "...XXXXX...",
+    "..XXXXXXX..",
+    "X.XXXXXXX.X",
+    "..XXXXXXX..",
+    "...XXXXX...",
+    "...........",
+    ".X.......X.",
+    ".....X.....",
+]
+# Pioggia: nuvola + gocce
+WRAIN = [
+    "...XXXX...",
+    "..XXXXXX..",
+    ".XXXXXXXX.",
+    "XXXXXXXXXX",
+    ".XXXXXXXX.",
+    "..........",
+    ".X..X..X..",
+    "X..X..X...",
+]
+# Temporale: nuvola + fulmine
+WSTORM = [
+    "...XXXX...",
+    "..XXXXXX..",
+    ".XXXXXXXX.",
+    "XXXXXXXXXX",
+    ".XXXXXXXX.",
+    "....XX....",
+    "...XX.....",
+    "..XXXX....",
+    "....XX....",
+    "...XX.....",
+]
+# Neve: nuvola + fiocchi
+WSNOW = [
+    "...XXXX...",
+    "..XXXXXX..",
+    ".XXXXXXXX.",
+    "XXXXXXXXXX",
+    ".XXXXXXXX.",
+    "..........",
+    ".X.X.X.X..",
+    "..X.X.X...",
+    ".X.X.X.X..",
+]
+
 # Meteo: nuvoletta (file cloud.png)
 CLOUD = [
     "......XXX...",

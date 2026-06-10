@@ -90,10 +90,42 @@ def main():
     save_glyph(":", P_TINY, GREY, os.path.join(p, "colon.png"))
     save_deg(P_TINY, GREY, os.path.join(p, "deg.png"))
 
-    # --- Giorno settimana IT, micro-pixel (bianco) ---
-    p = ensure(os.path.join(ASSETS, "dow"))
-    for name in ("LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"):
-        save_text(name, P_DOW, WHITE, os.path.join(p, f"{name}.png"), radius_ratio=0.46)
+    # --- Giorno settimana multilingua (micro-pixel, bianco) ---
+    # indice = valore hmSetting.getLanguage(); abbreviazioni LUN..DOM (ASCII).
+    # Solo lingue ad alfabeto latino; le altre useranno il fallback EN (idx 2).
+    DOW_LANGS = {
+        2:  ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],  # en
+        3:  ["LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM"],  # es
+        6:  ["LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"],  # fr
+        7:  ["MON", "DIE", "MIT", "DON", "FRE", "SAM", "SON"],  # de
+        8:  ["SEN", "SEL", "RAB", "KAM", "JUM", "SAB", "MIN"],  # id
+        9:  ["PON", "WTO", "SRO", "CZW", "PIA", "SOB", "NIE"],  # pl
+        10: ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"],  # it
+        14: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],         # vi
+        15: ["SEG", "TER", "QUA", "QUI", "SEX", "SAB", "DOM"],  # pt
+        16: ["MA", "DI", "WO", "DO", "VR", "ZA", "ZO"],         # nl
+        17: ["PZT", "SAL", "CAR", "PER", "CUM", "CMT", "PAZ"],  # tr
+        21: ["LUN", "MAR", "MIE", "JOI", "VIN", "SAM", "DUM"],  # ro
+        22: ["PO", "UT", "ST", "CT", "PA", "SO", "NE"],         # cs
+        25: ["DL", "DT", "DC", "DJ", "DV", "DS", "DG"],         # ca
+        26: ["MA", "TI", "KE", "TO", "PE", "LA", "SU"],         # fi
+        27: ["MAN", "TIR", "ONS", "TOR", "FRE", "LOR", "SON"],  # nb
+        28: ["MAN", "TIR", "ONS", "TOR", "FRE", "LOR", "SON"],  # da
+        29: ["MAN", "TIS", "ONS", "TOR", "FRE", "LOR", "SON"],  # sv
+        30: ["HET", "KED", "SZE", "CSU", "PEN", "SZO", "VAS"],  # hu
+        31: ["ISN", "SEL", "RAB", "KHA", "JUM", "SAB", "AHD"],  # ms
+        32: ["PO", "UT", "ST", "ST", "PI", "SO", "NE"],         # sk
+    }
+    DOW_CW = 72  # canvas fisso, testo allineato a destra (gap costante col giorno mese)
+    DOW_CH = F.GLYPH_H * P_DOW
+    for idx, days in DOW_LANGS.items():
+        pl = ensure(os.path.join(ASSETS, "dow", str(idx)))
+        for di, name in enumerate(days):
+            img = Image.new("RGBA", (DOW_CW, DOW_CH), (0, 0, 0, 0))
+            d = ImageDraw.Draw(img)
+            tw = F.text_size(name, P_DOW)[0]
+            F.draw_text(d, name, DOW_CW - tw, 0, P_DOW, WHITE, radius_ratio=0.46)
+            img.save(os.path.join(pl, f"{di}.png"))
 
     # --- Icone (grigie su pill scure, bianca per il cuore) ---
     p = ensure(os.path.join(ASSETS, "icon"))
@@ -101,6 +133,20 @@ def main():
     save_icon(IC.CLOUD,   ICONG, os.path.join(p, "cloud.png"))
     save_icon(IC.SUNRISE, ICONG, os.path.join(p, "sunrise.png"))
     save_icon(IC.HEART,   WHITE, os.path.join(p, "heart.png"))
+    # icone meteo dinamiche
+    save_icon(IC.WSUN,    ICONG, os.path.join(p, "w_sun.png"))
+    save_icon(IC.CLOUD,   ICONG, os.path.join(p, "w_cloud.png"))
+    save_icon(IC.WRAIN,   ICONG, os.path.join(p, "w_rain.png"))
+    save_icon(IC.WSTORM,  ICONG, os.path.join(p, "w_storm.png"))
+    save_icon(IC.WSNOW,   ICONG, os.path.join(p, "w_snow.png"))
+
+    # linea orizzontale di pixel (separatore ore/minuti, variante verticale)
+    line_pitch = 9
+    line_bmp = ["X" * 11]
+    lw, lh = F.bitmap_size(line_bmp, line_pitch)
+    img = Image.new("RGBA", (lw, lh), (0, 0, 0, 0))
+    F.draw_bitmap(ImageDraw.Draw(img), line_bmp, 0, 0, line_pitch, WHITE)
+    img.save(os.path.join(ASSETS, "sep_line.png"))
 
     # --- Separatore ora ":" = due punti da 4 micro-pixel (quadrato 2x2) ---
     mp = 7
