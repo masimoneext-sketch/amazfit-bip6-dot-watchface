@@ -41,7 +41,8 @@ def base_face():
     F.draw_text(d, mm, left_cx - mw / 2, 170, pb, RED)
 
     # data: DOW (micro) + giorno mese (rosso)
-    F.draw_text(d, "GIO", 24, 318, 4, WHITE, radius_ratio=0.46)
+    # basi allineate a y=342 come sul device (dow h28 -> top 314, day h42 -> top 300)
+    F.draw_text(d, "GIO", 24, 314, 4, WHITE, radius_ratio=0.46)
     F.draw_text(d, "11", 112, 300, 6, RED)
 
     # 4 pill a destra
