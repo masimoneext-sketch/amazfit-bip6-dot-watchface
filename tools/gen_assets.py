@@ -7,6 +7,7 @@ import os
 from PIL import Image, ImageDraw
 import dotfont as F
 import icons as IC
+import weather12 as W12
 
 ASSETS = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "assets", "bip-6"))
 
@@ -133,12 +134,9 @@ def main():
     save_icon(IC.CLOUD,   ICONG, os.path.join(p, "cloud.png"))
     save_icon(IC.SUNRISE, ICONG, os.path.join(p, "sunrise.png"))
     save_icon(IC.HEART,   WHITE, os.path.join(p, "heart.png"))
-    # icone meteo dinamiche
-    save_icon(IC.WSUN,    ICONG, os.path.join(p, "w_sun.png"))
-    save_icon(IC.CLOUD,   ICONG, os.path.join(p, "w_cloud.png"))
-    save_icon(IC.WRAIN,   ICONG, os.path.join(p, "w_rain.png"))
-    save_icon(IC.WSTORM,  ICONG, os.path.join(p, "w_storm.png"))
-    save_icon(IC.WSNOW,   ICONG, os.path.join(p, "w_snow.png"))
+    # icone meteo dinamiche: set CURATO 12 (weather12.ICONS) -> icon/w_<key>.png
+    for key, bmp in W12.ICONS.items():
+        save_icon(bmp, ICONG, os.path.join(p, f"w_{key}.png"))
 
     # linea orizzontale di pixel (separatore ore/minuti, variante verticale)
     line_pitch = 9

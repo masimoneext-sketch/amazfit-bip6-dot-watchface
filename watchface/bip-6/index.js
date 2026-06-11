@@ -32,16 +32,18 @@ function dowLang() {
 
 function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 
-// mappa codici meteo Huami (0..28, tabella UFFICIALE sensore WEATHER Zepp OS) -> nostre 5 icone
+// mappa codici meteo Huami (0..28, tabella UFFICIALE sensore WEATHER Zepp OS) -> set CURATO 12 icone
 // indice = condition index 0-based passato da WEATHER_CURRENT a IMG_LEVEL
-const SUN = 'icon/w_sun.png', CLD = 'icon/w_cloud.png', RN = 'icon/w_rain.png', ST = 'icon/w_storm.png', SN = 'icon/w_snow.png';
+const SUN = 'icon/w_sun.png', MOON = 'icon/w_moon.png', CLD = 'icon/w_cloud.png', OVC = 'icon/w_overcast.png',
+      RN = 'icon/w_rain.png', SN = 'icon/w_snow.png', SLT = 'icon/w_sleet.png', ST = 'icon/w_storm.png',
+      HL = 'icon/w_hail.png', FOG = 'icon/w_fog.png', SND = 'icon/w_sand.png', UNK = 'icon/w_unknown.png';
 const WEATHER_ICONS = [
   // 0 Cloudy   1 Showers  2 SnowShwr  3 Sunny    4 Overcast 5 LightRain 6 LightSnow 7 ModRain  8 ModSnow  9 HeavySnow
-  CLD,         RN,        SN,         SUN,       CLD,       RN,         SN,         RN,        SN,        SN,
-  // 10 HvyRain 11 Sand   12 Rain+Snow 13 Fog    14 Hazy    15 TStorm   16 Snowstrm 17 Dust    18 VHvyRain 19 Rain+Hail
-  RN,          CLD,       SN,         CLD,       CLD,       ST,         SN,         CLD,       RN,        ST,
+  CLD,         RN,        SN,         SUN,       OVC,       RN,         SN,         RN,        SN,        SN,
+  // 10 HvyRain 11 Sandstrm 12 Rain+Snow 13 Fog   14 Hazy    15 TStorm   16 Snowstrm 17 FloatDust 18 VHvyRain 19 Rain+Hail
+  RN,          SND,       SLT,        FOG,       FOG,       ST,         SN,         SND,       RN,        HL,
   // 20 TS+Hail 21 HvyRnst 22 Dust    23 HvySand 24 Rainstrm 25 Unknown 26 CldNight 27 ShwrNgt  28 SunNight
-  ST,          RN,        CLD,       CLD,       RN,        CLD,        CLD,        RN,        SUN,
+  HL,          RN,        SND,       SND,       RN,        UNK,        CLD,        RN,        MOON,
 ];
 
 function openNativeApp(kind) {
