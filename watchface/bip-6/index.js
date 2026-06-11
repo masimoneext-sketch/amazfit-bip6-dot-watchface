@@ -106,7 +106,7 @@ WatchFace({
 
     // ===== COLONNA DESTRA: 4 pill impilate =====
     const PX = 202, PW = 170, PH = 82, R = 28;
-    const rowY = [34, 126, 218, 310];
+    const rowY = [34, 126, 218, 362];  // pill battito (row 3) allineato alla banda equalizer
 
     function pill(py, red, kind) {
       try {

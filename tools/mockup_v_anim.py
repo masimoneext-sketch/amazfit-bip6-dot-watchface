@@ -47,7 +47,7 @@ def base_face():
 
     # 4 pill a destra
     PX, PW, PH = 202, 170, 82
-    rowY = [34, 126, 218, 310]
+    rowY = [34, 126, 218, 362]  # pill battito allineato alla banda equalizer
     pills = [
         (W12.ICONS["sun"] and None, "runner", "2616", PILL_BG, GREY),  # placeholder
     ]
