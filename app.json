@@ -4,7 +4,7 @@
     "appId": 1116827,
     "appName": "Dot Vertical",
     "appType": "watchface",
-    "version": { "code": 1, "name": "1.0.0" },
+    "version": { "code": 2, "name": "1.0.1" },
     "vender": "marco",
     "description": "Watch face dot-matrix verticale per Amazfit Bip 6",
     "icon": "images/preview.png"
