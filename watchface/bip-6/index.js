@@ -70,8 +70,9 @@ WatchFace({
         minute_startX: 29, minute_startY: 170, minute_array: NUM_BIG_R, minute_space: 12, minute_zero: 1,
       });
     } catch (e) {}
-    // separatore ore/minuti: due punti 2x2 (centrati sotto le cifre)
-    try { hmUI.createWidget(hmUI.widget.IMG, { x: 64, y: 138, src: 'sep_dots.png' }); } catch (e) {}
+    // separatore ore/minuti: due punti 2x2 (centrati sotto le cifre) — lampeggia ~1Hz
+    let sepWidget = null;
+    try { sepWidget = hmUI.createWidget(hmUI.widget.IMG, { x: 64, y: 138, src: 'sep_dots.png' }); } catch (e) {}
 
     // helper campo-numero a cifre-immagine
     function numberField(x, y, folder, digitW, maxDigits) {
@@ -226,6 +227,8 @@ WatchFace({
       }
       let eqFrame = 0, eqBpm = 0;
       function eqTick() {
+        // separatore lampeggiante ~1Hz (480ms on / 480ms off a 120ms/frame)
+        if (sepWidget) sepWidget.setProperty(hmUI.prop.VISIBLE, (Math.floor(eqFrame / 4) % 2 === 0));
         if (eqFrame % 20 === 0) eqBpm = readHR();           // BPM letto ~ogni 2.4s
         const lvl = eqBpm > 0 ? Math.max(0, Math.min(1, (eqBpm - 50) / 100)) : 0.12;
         const energy = 0.2 + 0.8 * lvl;                      // ampiezza barre dal battito

@@ -40,12 +40,6 @@ def base_face():
     F.draw_text(d, hh, left_cx - hw / 2, 34, pb, WHITE)
     F.draw_text(d, mm, left_cx - mw / 2, 170, pb, RED)
 
-    # separatore: due punti 2x2 (pitch 9) centrati
-    dp = 9
-    two = ["XX...XX", "XX...XX"]
-    tw = F.bitmap_size(two, dp)[0]
-    F.draw_bitmap(d, two, left_cx - tw / 2, 138, dp, WHITE)
-
     # data: DOW (micro) + giorno mese (rosso)
     F.draw_text(d, "GIO", 24, 318, 4, WHITE, radius_ratio=0.46)
     F.draw_text(d, "11", 112, 300, 6, RED)
@@ -80,6 +74,16 @@ def icy_w(rowY):
     return rowY[1] + 82 / 2 - 3
 
 
+def draw_sep(d, frame):
+    """Separatore due punti 2x2 lampeggiante (~1Hz, sync col device)."""
+    if (frame // 4) % 2 != 0:
+        return
+    dp = 9
+    two = ["XX...XX", "XX...XX"]
+    tw = F.bitmap_size(two, dp)[0]
+    F.draw_bitmap(d, two, 95 - tw / 2, 138, dp, WHITE)
+
+
 def draw_eq(d, frame):
     EQ_X, EQ_BASE, EQ_BX, EQ_DY, EQ_BARS, EQ_MAXH = 24, 430, 21, 17, 8, 5
     lvl = max(0.0, min(1.0, (BPM - 50) / 100.0))
@@ -102,13 +106,15 @@ def main():
     frames = []
     for f in range(NF):
         img = base.copy()
-        draw_eq(ImageDraw.Draw(img), f)
+        dd = ImageDraw.Draw(img)
+        draw_sep(dd, f)
+        draw_eq(dd, f)
         frames.append(img)
     out_dir = os.path.join(os.path.dirname(__file__), "out")
     os.makedirs(out_dir, exist_ok=True)
     gif = os.path.join(out_dir, "mockup_v_anim.gif")
     frames[0].save(gif, save_all=True, append_images=frames[1:], duration=120, loop=0)
-    frames[6].save(os.path.join(out_dir, "mockup_v_anim_frame.png"))
+    frames[8].save(os.path.join(out_dir, "mockup_v_anim_frame.png"))
     print("OK", gif)
 
 
