@@ -32,12 +32,16 @@ function dowLang() {
 
 function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 
-// mappa codici meteo Huami (1..29) -> nostre 5 icone (indice 0 = codice 1)
+// mappa codici meteo Huami (0..28, tabella UFFICIALE sensore WEATHER Zepp OS) -> nostre 5 icone
+// indice = condition index 0-based passato da WEATHER_CURRENT a IMG_LEVEL
 const SUN = 'icon/w_sun.png', CLD = 'icon/w_cloud.png', RN = 'icon/w_rain.png', ST = 'icon/w_storm.png', SN = 'icon/w_snow.png';
 const WEATHER_ICONS = [
-  SUN, CLD, CLD, RN, ST, ST, SN, RN, RN, RN,   // 1-10
-  RN, RN, RN, SN, SN, SN, SN, SN, CLD, RN,     // 11-20
-  CLD, RN, RN, RN, RN, RN, SN, SN, SN,         // 21-29
+  // 0 Cloudy   1 Showers  2 SnowShwr  3 Sunny    4 Overcast 5 LightRain 6 LightSnow 7 ModRain  8 ModSnow  9 HeavySnow
+  CLD,         RN,        SN,         SUN,       CLD,       RN,         SN,         RN,        SN,        SN,
+  // 10 HvyRain 11 Sand   12 Rain+Snow 13 Fog    14 Hazy    15 TStorm   16 Snowstrm 17 Dust    18 VHvyRain 19 Rain+Hail
+  RN,          CLD,       SN,         CLD,       CLD,       ST,         SN,         CLD,       RN,        ST,
+  // 20 TS+Hail 21 HvyRnst 22 Dust    23 HvySand 24 Rainstrm 25 Unknown 26 CldNight 27 ShwrNgt  28 SunNight
+  ST,          RN,        CLD,       CLD,       RN,        CLD,        CLD,        RN,        SUN,
 ];
 
 function openNativeApp(kind) {
@@ -166,7 +170,7 @@ WatchFace({
       try {
         if (!timeSensor) return;
         const wk = readNum(timeSensor, ['week']);
-        if (wk !== null && dowWidget) dowWidget.setProperty(hmUI.prop.SRC, `dow/${LANG}/${(wk + 5) % 7}.png`);
+        if (wk !== null && dowWidget) dowWidget.setProperty(hmUI.prop.SRC, `dow/${LANG}/${(wk + 6) % 7}.png`);
         const d = readNum(timeSensor, ['day']);
         if (d !== null) dayField.set(pad2(d));
       } catch (e) {}
