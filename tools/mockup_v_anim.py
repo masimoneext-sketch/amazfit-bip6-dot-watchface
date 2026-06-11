@@ -81,7 +81,7 @@ def icy_w(rowY):
 
 
 def draw_eq(d, frame):
-    EQ_X, EQ_BASE, EQ_BX, EQ_DY, EQ_BARS, EQ_MAXH = 30, 430, 21, 17, 8, 5
+    EQ_X, EQ_BASE, EQ_BX, EQ_DY, EQ_BARS, EQ_MAXH = 24, 430, 21, 17, 8, 5
     lvl = max(0.0, min(1.0, (BPM - 50) / 100.0))
     energy = 0.2 + 0.8 * lvl
     speed = 0.18 + 0.5 * lvl

@@ -204,7 +204,7 @@ WatchFace({
 
     // ===== EQUALIZER agganciato al battito (fascia sotto la data) =====
     try {
-      const EQ_X = 30, EQ_BASE = 430, EQ_BX = 21, EQ_DY = 17, EQ_BARS = 8, EQ_MAXH = 5;
+      const EQ_X = 24, EQ_BASE = 430, EQ_BX = 21, EQ_DY = 17, EQ_BARS = 8, EQ_MAXH = 5;
       const eqDots = [];
       for (let i = 0; i < EQ_BARS; i++) {
         eqDots[i] = [];
