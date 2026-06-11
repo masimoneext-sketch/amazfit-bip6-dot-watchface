@@ -106,7 +106,7 @@ WatchFace({
 
     // ===== COLONNA DESTRA: 4 pill impilate =====
     const PX = 202, PW = 170, PH = 82, R = 28;
-    const rowY = [34, 126, 218, 362];  // pill battito (row 3) allineato alla banda equalizer
+    const rowY = [34, 126, 218, 318];  // pill battito (row 3) allineato alla banda equalizer, sollevato dagli angoli arrotondati
 
     function pill(py, red, kind) {
       try {
@@ -205,7 +205,7 @@ WatchFace({
 
     // ===== EQUALIZER agganciato al battito (fascia sotto la data) =====
     try {
-      const EQ_X = 24, EQ_BASE = 430, EQ_BX = 21, EQ_DY = 17, EQ_BARS = 8, EQ_MAXH = 5;
+      const EQ_X = 24, EQ_BASE = 385, EQ_BX = 21, EQ_DY = 17, EQ_BARS = 8, EQ_MAXH = 5;
       const eqDots = [];
       for (let i = 0; i < EQ_BARS; i++) {
         eqDots[i] = [];

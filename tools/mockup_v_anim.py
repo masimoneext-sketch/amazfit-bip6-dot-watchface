@@ -47,7 +47,7 @@ def base_face():
 
     # 4 pill a destra
     PX, PW, PH = 202, 170, 82
-    rowY = [34, 126, 218, 362]  # pill battito allineato alla banda equalizer
+    rowY = [34, 126, 218, 318]  # pill battito allineato alla banda equalizer, sollevato dagli angoli
     pills = [
         (W12.ICONS["sun"] and None, "runner", "2616", PILL_BG, GREY),  # placeholder
     ]
@@ -86,7 +86,7 @@ def draw_sep(d, frame):
 
 
 def draw_eq(d, frame):
-    EQ_X, EQ_BASE, EQ_BX, EQ_DY, EQ_BARS, EQ_MAXH = 24, 430, 21, 17, 8, 5
+    EQ_X, EQ_BASE, EQ_BX, EQ_DY, EQ_BARS, EQ_MAXH = 24, 385, 21, 17, 8, 5
     lvl = max(0.0, min(1.0, (BPM - 50) / 100.0))
     energy = 0.2 + 0.8 * lvl
     speed = 0.18 + 0.5 * lvl
