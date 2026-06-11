@@ -156,6 +156,25 @@ def main():
     F.draw_bitmap(d, dot, 0, sw * 2, mp, WHITE)
     img.save(os.path.join(ASSETS, "sep_colon.png"))
 
+    # --- Separatore verticale ore/minuti: DUE punti da 4 pixel (quadrato 2x2) affiancati ---
+    dp = 9
+    two = ["XX...XX", "XX...XX"]
+    dw, dh = F.bitmap_size(two, dp)
+    img = Image.new("RGBA", (dw, dh), (0, 0, 0, 0))
+    F.draw_bitmap(ImageDraw.Draw(img), two, 0, 0, dp, WHITE)
+    img.save(os.path.join(ASSETS, "sep_dots.png"))
+
+    # --- Pallini equalizer (agganciato al battito): grigio + rosso (cappello barra) ---
+    def save_eqdot(color, path, box=15, rr=0.42):
+        img = Image.new("RGBA", (box, box), (0, 0, 0, 0))
+        d = ImageDraw.Draw(img)
+        r = box * rr
+        cx = cy = box / 2
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=color)
+        img.save(path)
+    save_eqdot(GREY, os.path.join(ASSETS, "eq_g.png"))
+    save_eqdot(RED,  os.path.join(ASSETS, "eq_r.png"))
+
     # --- preview ---
     p = ensure(os.path.join(ASSETS, "images"))
     mk = os.path.join(os.path.dirname(__file__), "..", "mockup.png")

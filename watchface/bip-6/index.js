@@ -46,6 +46,9 @@ const WEATHER_ICONS = [
   HL,          RN,        SND,       SND,       RN,        UNK,        CLD,        RN,        MOON,
 ];
 
+// timer dell'equalizer (agganciato al battito) — fermato in onDestroy
+let eqTimer = null;
+
 function openNativeApp(kind) {
   try {
     let url = 'activityAppScreen';
@@ -67,8 +70,8 @@ WatchFace({
         minute_startX: 29, minute_startY: 208, minute_array: NUM_BIG_R, minute_space: 12, minute_zero: 1,
       });
     } catch (e) {}
-    // linea separatrice
-    try { hmUI.createWidget(hmUI.widget.IMG, { x: 46, y: 178, src: 'sep_line.png' }); } catch (e) {}
+    // separatore ore/minuti: due punti 2x2 (centrati sotto le cifre)
+    try { hmUI.createWidget(hmUI.widget.IMG, { x: 64, y: 176, src: 'sep_dots.png' }); } catch (e) {}
 
     // helper campo-numero a cifre-immagine
     function numberField(x, y, folder, digitW, maxDigits) {
@@ -198,7 +201,58 @@ WatchFace({
         timeSensor.addEventListener(timeSensor.event.MINUTEEND, () => { updateDate(); updateSteps(); updateWeather(); });
       }
     } catch (e) {}
+
+    // ===== EQUALIZER agganciato al battito (fascia sotto la data) =====
+    try {
+      const EQ_X = 30, EQ_BASE = 430, EQ_BX = 21, EQ_DY = 17, EQ_BARS = 8, EQ_MAXH = 5;
+      const eqDots = [];
+      for (let i = 0; i < EQ_BARS; i++) {
+        eqDots[i] = [];
+        for (let k = 0; k < EQ_MAXH; k++) {
+          let w = null;
+          try {
+            w = hmUI.createWidget(hmUI.widget.IMG, { x: EQ_X + i * EQ_BX, y: EQ_BASE - k * EQ_DY, src: 'eq_g.png' });
+            w.setProperty(hmUI.prop.VISIBLE, false);
+          } catch (e) {}
+          eqDots[i][k] = w;
+        }
+      }
+      let hrSensor = null;
+      try { hrSensor = hmSensor.createSensor(hmSensor.id.HEART_RATE); } catch (e) {}
+      function readHR() {
+        if (!hrSensor) return 0;
+        const v = readNum(hrSensor, ['getCurrent', 'last', 'getLast', 'current']);
+        return (v && v > 0) ? v : 0;
+      }
+      let eqFrame = 0, eqBpm = 0;
+      function eqTick() {
+        if (eqFrame % 20 === 0) eqBpm = readHR();           // BPM letto ~ogni 2.4s
+        const lvl = eqBpm > 0 ? Math.max(0, Math.min(1, (eqBpm - 50) / 100)) : 0.12;
+        const energy = 0.2 + 0.8 * lvl;                      // ampiezza barre dal battito
+        const speed = 0.18 + lvl * 0.5;                      // velocita' danza dal battito
+        for (let i = 0; i < EQ_BARS; i++) {
+          const wave = 0.5 + 0.5 * Math.sin(eqFrame * speed + i * 0.8);
+          let h = 1 + Math.round((EQ_MAXH - 1) * energy * wave);
+          if (h < 1) h = 1; else if (h > EQ_MAXH) h = EQ_MAXH;
+          for (let k = 0; k < EQ_MAXH; k++) {
+            const w = eqDots[i][k];
+            if (!w) continue;
+            if (k < h) {
+              w.setProperty(hmUI.prop.SRC, (k === h - 1) ? 'eq_r.png' : 'eq_g.png');
+              w.setProperty(hmUI.prop.VISIBLE, true);
+            } else {
+              w.setProperty(hmUI.prop.VISIBLE, false);
+            }
+          }
+        }
+        eqFrame++;
+      }
+      eqTick();
+      if (typeof setInterval !== 'undefined') eqTimer = setInterval(eqTick, 120);
+    } catch (e) {}
   },
 
-  onDestroy() {},
+  onDestroy() {
+    try { if (eqTimer && typeof clearInterval !== 'undefined') { clearInterval(eqTimer); eqTimer = null; } } catch (e) {}
+  },
 });
