@@ -66,12 +66,12 @@ WatchFace({
     // ===== COLONNA SINISTRA: ore sopra / minuti sotto =====
     try {
       hmUI.createWidget(hmUI.widget.IMG_TIME, {
-        hour_startX: 29, hour_startY: 72, hour_array: NUM_BIG_W, hour_space: 12, hour_zero: 1,
-        minute_startX: 29, minute_startY: 208, minute_array: NUM_BIG_R, minute_space: 12, minute_zero: 1,
+        hour_startX: 29, hour_startY: 34, hour_array: NUM_BIG_W, hour_space: 12, hour_zero: 1,
+        minute_startX: 29, minute_startY: 170, minute_array: NUM_BIG_R, minute_space: 12, minute_zero: 1,
       });
     } catch (e) {}
     // separatore ore/minuti: due punti 2x2 (centrati sotto le cifre)
-    try { hmUI.createWidget(hmUI.widget.IMG, { x: 64, y: 176, src: 'sep_dots.png' }); } catch (e) {}
+    try { hmUI.createWidget(hmUI.widget.IMG, { x: 64, y: 138, src: 'sep_dots.png' }); } catch (e) {}
 
     // helper campo-numero a cifre-immagine
     function numberField(x, y, folder, digitW, maxDigits) {
