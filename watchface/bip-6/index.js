@@ -22,6 +22,7 @@ const NUM_BIG_R = digits('num_big_r');
 const NUM_TINY_G = digits('num_tiny_g');
 const NUM_HR_W = digits('num_hr_w');
 const NUM_SM_R = digits('num_sm_r');
+const NUM_BATT_W = digits('num_batt_w');
 
 const DOW_LANGS = [2, 3, 6, 7, 8, 9, 10, 14, 15, 16, 17, 21, 22, 25, 26, 27, 28, 29, 30, 31, 32];
 function dowLang() {
@@ -104,6 +105,14 @@ WatchFace({
     try { dowWidget = hmUI.createWidget(hmUI.widget.IMG, { x: 24, y: 314, src: `dow/${LANG}/0.png` }); } catch (e) {}
     const dayField = numberField(106, 300, 'num_sm_r', 30, 2);
 
+    // BATTERIA (micro-pixel) nella fascia libera sotto i minuti (~254) sopra la data (~300).
+    // Cifre allineate da BATT_X; il simbolo % viene riposizionato dopo l'ultima cifra
+    // (gestisce 2 cifre "85%" e 3 cifre "100%" senza gap/sovrapposizioni).
+    const BATT_X = 77, BATT_Y = 268, BATT_DW = 12;
+    const battField = numberField(BATT_X, BATT_Y, 'num_batt_w', BATT_DW, 3);
+    let pctImg = null;
+    try { pctImg = hmUI.createWidget(hmUI.widget.IMG, { x: BATT_X + 2 * BATT_DW + 2, y: BATT_Y, src: 'num_batt_w/percent.png' }); } catch (e) {}
+
     // ===== COLONNA DESTRA: 4 pill impilate =====
     const PX = 202, PW = 170, PH = 82, R = 28;
     const rowY = [34, 126, 218, 318];  // pill battito (row 3) allineato alla banda equalizer, sollevato dagli angoli arrotondati
@@ -172,6 +181,23 @@ WatchFace({
     let timeSensor = null;
     try { timeSensor = hmSensor.createSensor(hmSensor.id.TIME); } catch (e) {}
 
+    let battSensor = null;
+    try { battSensor = hmSensor.createSensor(hmSensor.id.BATTERY); } catch (e) {}
+    function updateBattery() {
+      try {
+        if (!battSensor) return;
+        const b = readNum(battSensor, ['getCurrent', 'current', 'last', 'getLast']);
+        if (b === null) return;
+        let val = Math.round(b);
+        if (val < 0) val = 0; else if (val > 100) val = 100;
+        battField.set(val);
+        const n = ('' + val).length;
+        if (pctImg) {
+          try { pctImg.setProperty(hmUI.prop.MORE, { x: BATT_X + n * BATT_DW + 2, y: BATT_Y, src: 'num_batt_w/percent.png' }); } catch (e) {}
+        }
+      } catch (e) {}
+    }
+
     function updateDate() {
       try {
         if (!timeSensor) return;
@@ -196,10 +222,10 @@ WatchFace({
       } catch (e) {}
     }
 
-    updateDate(); updateSteps(); updateWeather();
+    updateDate(); updateSteps(); updateWeather(); updateBattery();
     try {
       if (timeSensor && timeSensor.addEventListener) {
-        timeSensor.addEventListener(timeSensor.event.MINUTEEND, () => { updateDate(); updateSteps(); updateWeather(); });
+        timeSensor.addEventListener(timeSensor.event.MINUTEEND, () => { updateDate(); updateSteps(); updateWeather(); updateBattery(); });
       }
     } catch (e) {}
 

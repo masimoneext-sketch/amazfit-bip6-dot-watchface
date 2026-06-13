@@ -21,6 +21,7 @@ P_BIG  = 12   # ore/minuti
 P_DAY  = 6    # giorno del mese (rosso)
 P_HR   = 6    # battito (bianco, grande)
 P_TINY = 3    # valori pill: passi/meteo/alba (grigi, piccoli)
+P_BATT = 2    # percentuale batteria (bianco, micro-pixel)
 P_DOW  = 4    # giorno settimana (micro-pixel)
 P_ICON = 3    # icone pill
 ICON_CANVAS = 42  # canvas quadrato fisso per centrare le icone
@@ -90,6 +91,12 @@ def main():
         save_glyph(str(n), P_TINY, GREY, os.path.join(p, f"{n}.png"))
     save_glyph(":", P_TINY, GREY, os.path.join(p, "colon.png"))
     save_deg(P_TINY, GREY, os.path.join(p, "deg.png"))
+
+    # --- Batteria (bianco, micro-pixel): cifre 0-9 + simbolo percento ---
+    p = ensure(os.path.join(ASSETS, "num_batt_w"))
+    for n in range(10):
+        save_glyph(str(n), P_BATT, WHITE, os.path.join(p, f"{n}.png"), radius_ratio=0.46)
+    save_glyph("%", P_BATT, WHITE, os.path.join(p, "percent.png"), radius_ratio=0.46)
 
     # --- Giorno settimana multilingua (micro-pixel, bianco) ---
     # indice = valore hmSetting.getLanguage(); abbreviazioni LUN..DOM (ASCII).
